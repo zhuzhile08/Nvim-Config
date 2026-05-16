@@ -1,0 +1,9 @@
+# Package manager data
+
+/lazy-lock.json
+
+
+# MacOS specific
+
+.DS_Store
+
