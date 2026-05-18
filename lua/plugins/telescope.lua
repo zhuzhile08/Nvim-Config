@@ -26,16 +26,6 @@ return {
 			},
 		},
 		config = function(_, opts)
-			local fileBrowserActions = require("telescope").extensions.file_browser
-			opts.extensions.file_browser.mappings = {
-				["i"] = {
-					[systemDependantShortcut("<D-o>", "<C-o>")] = fileBrowserActions.change_cwd
-				},
-				["n"] = {
-					["o"] = fileBrowserActions.change_cwd,
-				}
-			}
-
 			require("telescope").setup(opts)
 
 			vim.keymap.set("n", systemDependantShortcut("<D-f>", "<C-f>"), ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
