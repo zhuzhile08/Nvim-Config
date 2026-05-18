@@ -18,7 +18,7 @@ return {
 				filtered_items = {
 					hide_dotfiles = false,
 					hide_gitignored = false,
-				}
+				},
 			},
 			window = {
 				position = "right",
@@ -43,7 +43,7 @@ return {
 						display_name = " 󰊢  Git ",
 					},
 				}
-			}
+			},
 		},
 		keys = {
 			{ "<leader>nn", "<cmd>Neotree toggle<CR>", desc = "Toggle Neo-Tree file browser" },

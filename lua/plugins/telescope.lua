@@ -1,3 +1,12 @@
+local function systemDependantShortcut(darwin, other)
+	if vim.loop.os_uname().sysname == "Darwin" then
+		return darwin
+	end
+
+	return other
+end
+
+
 return {
 	{
 		"nvim-telescope/telescope.nvim",
@@ -11,14 +20,16 @@ return {
 		},
 		opts = {
 			extensions = {
-				file_browser = { },
+				file_browser = {
+					mappings = { }
+				},
 			},
 		},
 		config = function(_, opts)
 			local fileBrowserActions = require("telescope").extensions.file_browser
-			opts.extensions.file_browser = {
+			opts.extensions.file_browser.mappings = {
 				["i"] = {
-					["o"] = fileBrowserActions.change_cwd
+					[systemDependantShortcut("<D-o>", "<C-o>")] = fileBrowserActions.change_cwd
 				},
 				["n"] = {
 					["o"] = fileBrowserActions.change_cwd,
@@ -27,11 +38,7 @@ return {
 
 			require("telescope").setup(opts)
 
-			if vim.loop.os_uname().sysname == "Darwin" then
-				vim.keymap.set("n", "<D-f>", ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
-			else
-				vim.keymap.set("n", "<C-f>", ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
-			end
+			vim.keymap.set("n", systemDependantShortcut("<D-f>", "<C-f>"), ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
 
 			vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { desc = "Telescope find files" })
 			vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>", { desc = "Telescope buffers" })
