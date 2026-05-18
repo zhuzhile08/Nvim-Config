@@ -1,8 +1,17 @@
 return {
 	"folke/which-key.nvim",
 	event = "VeryLazy",
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+	},
 	opts = {
-		preset = "modern"
+		preset = "modern",
+
+		win = {
+			wo = { -- Transparency
+				winblend = 30
+			}
+		},
 	},
 	keys = {
 		{

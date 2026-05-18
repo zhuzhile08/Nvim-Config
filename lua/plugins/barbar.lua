@@ -1,7 +1,6 @@
 return {
 	"romgrk/barbar.nvim",
 	event = "VeryLazy",
-	version = "^1.9.1",
 	dependencies = {
 		"lewis6991/gitsigns.nvim",
 		"nvim-tree/nvim-web-devicons",
@@ -15,7 +14,7 @@ return {
 		{ "<leader>wl", "<Cmd>BufferMoveNext<CR>", noremap = true, silent = true, desc = "Move Buffer Right" },
 
 		{
-			"<leader>!q", function()
+			"<leader>Q", function()
 				vim.cmd("BufferClose!")
 			end, noremap = true, silent = true, desc = "Close Buffer without Saving"
 		},

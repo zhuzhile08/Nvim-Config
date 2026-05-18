@@ -1,18 +1,45 @@
 return {
-	"nvim-telescope/telescope.nvim",
-	tag = "0.1.8",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
+	{
+		"nvim-telescope/telescope.nvim",
+		version = "*",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "make",
+			},
+		},
+		opts = {
+			extensions = {
+				file_browser = {
+
+				},
+			},
+		},
+		config = function(_, opts)
+			require("telescope").setup(opts)
+
+			if vim.loop.os_uname().sysname == "Darwin" then
+				vim.keymap.set("n", "<D-f>", ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
+			else
+				vim.keymap.set("n", "<C-f>", ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
+			end
+
+			vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { desc = "Telescope find files" })
+			vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>", { desc = "Telescope buffers" })
+			vim.keymap.set("n", "<leader>fs", ":Telescope grep_string<CR>", { desc = "Telescope find marked string" })
+			vim.keymap.set("n", "<leader>fF", ":Telescope file_browser<CR>", { desc = "Telescope find folder" })
+
+			require("telescope").load_extension("find_template")
+			require("telescope").load_extension("file_browser")
+		end,
 	},
-	config = function()
-		local builtin = require("telescope.builtin")
-
-		vim.keymap.set("n", "<leader>fF", builtin.find_files, { desc = "Telescope find files" })
-		vim.keymap.set("n", "<leader>ff", builtin.live_grep, { desc = "Telescope live grep" })
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-		vim.keymap.set("n", "<leader>fs", builtin.grep_string, { desc = "Telescope find marked string" })
-
-		require("telescope").load_extension("find_template")
-	end,
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"nvim-lua/plenary.nvim",
+		},
+	}
 }
 

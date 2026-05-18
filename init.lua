@@ -56,7 +56,10 @@ vim.api.nvim_create_autocmd("FileType", { -- Custom indentation for C/C++
 -- Keybinds
 
 local kmap = vim.keymap
-local snoremap = { noremap = true, silent = true}
+
+local function snoremap(d)
+	return { noremap = true, silent = true, desc = d }
+end
 
 
 -- Set the leader key
@@ -65,32 +68,50 @@ kmap.set("n", " ", "<Nop>", { silent = true, remap = false }) -- Clear the space
 vim.g.mapleader = " "
 
 
-kmap.set("i", "<Esc>", "<Esc>:update<CR>", snoremap) -- Exit insert mode with just escapne
+kmap.set("i", "<Esc>", "<Esc>:update<CR>", snoremap("Exit insert mode")) -- Exit insert mode with just escape
+kmap.set("t", "<Esc>", "<C-\\><C-n>", snoremap("Exit terminal mode")) -- Exit terminal mode
 
-kmap.set("n", "<leader>s", ":write<CR>", snoremap) -- Save current file
-kmap.set("n", "<leader>S", ":wa<CR>", snoremap) -- Save all files
+kmap.set("n", "<leader>s", ":write<CR>", snoremap("Save current file")) -- Save current file
+kmap.set("n", "<leader>S", ":wa<CR>", snoremap("Save all files")) -- Save all files
 
-kmap.set("n", "<leader>K", "<C-w>k", snoremap) -- Window navigation
-kmap.set("n", "<leader>J", "<C-w>j", snoremap)
-kmap.set("n", "<leader>H", "<C-w>h", snoremap)
-kmap.set("n", "<leader>L", "<C-w>l", snoremap)
-kmap.set("n", "<leader>ws", "<C-w>s", snoremap) -- Window creation
-kmap.set("n", "<leader>wv", "<C-w>v", snoremap)
+kmap.set("n", "<leader>K", "<C-w>k", snoremap("Move to upper window")) -- Window navigation
+kmap.set("n", "<leader>J", "<C-w>j", snoremap("Move to lower window"))
+kmap.set("n", "<leader>H", "<C-w>h", snoremap("Move to left window"))
+kmap.set("n", "<leader>L", "<C-w>l", snoremap("Move to right window"))
+kmap.set("n", "<leader>ws", "<C-w>s", snoremap("Create window below")) -- Window creation
+kmap.set("n", "<leader>wv", "<C-w>v", snoremap("Create window above"))
 
-kmap.set("n", "<leader>nf", ":enew<CR>", snoremap)
+kmap.set("n", "<leader>fn", ":enew<CR>", snoremap("Create new file")) -- New file
+
+kmap.set("n", "<leader>t", ":botright split | terminal<CR>", snoremap("Create terminal")) -- Create terminal
+
+kmap.set("n", "<leader>m", "za", snoremap("Toggle current fold")) -- Folding
+kmap.set("n", "<leader>M", "za", snoremap("Toggle all folds under cursor"))
 
 kmap.set("n", "<C-d>", "<C-d>zz")
 kmap.set("n", "<C-u>", "<C-u>zz")
 
-kmap.set("n", "n", "nzzzv")
-kmap.set("n", "N", "Nzzzv")
+kmap.set("n", "n", "nzzzv", snoremap("Auto-search downwards")) -- Searching utility
+kmap.set("n", "N", "Nzzzv", snoremap("Auto search upwards"))
+kmap.set('n', '<leader>c', function()
+	vim.fn.setreg("/", "")
+end, snoremap("Clear search registers"))
 
 
 -- System custom config
 
 if vim.loop.os_uname().sysname == "Darwin" then
-	kmap.set("n", "<C-q>", "", snoremap) -- Exit by command-q on MacOs
+	kmap.set("n", "<C-q>", "", snoremap("Quit")) -- Exit by command-q on MacOs
 end
+
+
+-- Folding config
+opt.foldenable = false
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldtext = "v:lua.vim.treesitter.foldtext()"
+opt.foldcolumn = "0"
+vim.opt.foldlevel = 99
 
 
 -- lazy.nvim setup and configs
