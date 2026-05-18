@@ -11,12 +11,20 @@ return {
 		},
 		opts = {
 			extensions = {
-				file_browser = {
-
-				},
+				file_browser = { },
 			},
 		},
 		config = function(_, opts)
+			local fileBrowserActions = require("telescope").extensions.file_browser
+			opts.extensions.file_browser = {
+				["i"] = {
+					["o"] = fileBrowserActions.change_cwd
+				},
+				["n"] = {
+					["o"] = fileBrowserActions.change_cwd,
+				}
+			}
+
 			require("telescope").setup(opts)
 
 			if vim.loop.os_uname().sysname == "Darwin" then
