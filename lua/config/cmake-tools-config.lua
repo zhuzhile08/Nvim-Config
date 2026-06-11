@@ -50,9 +50,9 @@ local function ensureCMakeToolsLoaded()
 end
 
 
-vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged", }, {
-	callback = ensureCMakeToolsLoaded,
-})
+-- vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged", }, {
+-- 	callback = ensureCMakeToolsLoaded,
+-- })
 
 M.ensureCMakeToolsLoaded = ensureCMakeToolsLoaded
 
