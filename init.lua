@@ -69,7 +69,13 @@ vim.g.mapleader = " "
 
 
 kmap.set("i", "<Esc>", "<Esc>:update<CR>", snoremap("Exit insert mode")) -- Exit insert mode with just escape
-kmap.set("t", "<Esc>", "<C-\\><C-n>", snoremap("Exit terminal mode")) -- Exit terminal mode
+kmap.set("t", "<Esc>", function ()
+	if vim.g.lazygit_opened == 1 then
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+	else
+		vim.api.nvim_input("<C-\\><C-n>")
+	end
+end, snoremap("Exit terminal mode")) -- Exit terminal mode
 
 kmap.set("n", "<leader>s", ":write<CR>", snoremap("Save current file")) -- Save current file
 kmap.set("n", "<leader>S", ":wa<CR>", snoremap("Save all files")) -- Save all files
@@ -106,12 +112,13 @@ end
 
 
 -- Folding config
-opt.foldenable = false
+opt.foldenable = true
+opt.foldcolumn = "1"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldtext = "v:lua.vim.treesitter.foldtext()"
-opt.foldcolumn = "0"
-vim.opt.foldlevel = 99
+opt.foldtext = ""
 
 
 -- lazy.nvim setup and configs
