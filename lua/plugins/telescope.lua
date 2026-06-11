@@ -26,7 +26,8 @@ return {
 			},
 		},
 		config = function(_, opts)
-			require("telescope").setup(opts)
+			local telescope = require("telescope")
+			telescope.setup(opts)
 
 			vim.keymap.set("n", systemDependantShortcut("<D-f>", "<C-f>"), ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
 
@@ -35,8 +36,11 @@ return {
 			vim.keymap.set("n", "<leader>fs", ":Telescope grep_string<CR>", { desc = "Telescope find marked string" })
 			vim.keymap.set("n", "<leader>fF", ":Telescope file_browser<CR>", { desc = "Telescope find folder" })
 
+			vim.keymap.set("n", "<leader>fg", function () telescope.extensions.lazygit.lazygit() end, { desc = "Telescope find git submodules" })
+
 			require("telescope").load_extension("find_template")
 			require("telescope").load_extension("file_browser")
+			require("telescope").load_extension("lazygit")
 		end,
 	},
 	{
