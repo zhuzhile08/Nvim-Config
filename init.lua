@@ -111,6 +111,27 @@ if vim.loop.os_uname().sysname == "Darwin" then
 end
 
 
+-- Editor custom config
+
+if vim.g.neovide == true then
+	vim.g.neovide_scale_factor = 1.0
+
+	local changeNeovideScale = function(delta)
+		return function ()
+			vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+		end
+	end
+
+	if vim.loop.os_uname().sysname == "Darwin" then
+		vim.keymap.set("n", "<D-=>", changeNeovideScale(1.25))
+		vim.keymap.set("n", "<D-->", changeNeovideScale(0.8))
+	else
+		vim.keymap.set("n", "<C-=>", changeNeovideScale(1.25))
+		vim.keymap.set("n", "<C-->", changeNeovideScale(0.8))
+	end
+end
+
+
 -- Folding config
 opt.foldenable = true
 opt.foldcolumn = "1"
